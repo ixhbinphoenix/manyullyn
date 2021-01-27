@@ -1,0 +1,27 @@
+{
+  "name": "manyullyn",
+  "version": "0.0.1",
+  "description": "Manyullyn is a twitch chatbot for moderation and fun!",
+  "main": "/src/index.js",
+  "scripts": {
+    "start": "node ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PhoenixGames-Phoenix/manyullyn.git"
+  },
+  "keywords": [
+    "twitch",
+    "chatbot",
+    "nodejs"
+  ],
+  "author": "Phoenix_13",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PhoenixGames-Phoenix/manyullyn/issues"
+  },
+  "homepage": "https://github.com/PhoenixGames-Phoenix/manyullyn#readme",
+  "dependencies": {
+    "tmi.js": "^1.7.1"
+  }
+}

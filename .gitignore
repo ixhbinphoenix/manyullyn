@@ -1,3 +1,9 @@
+#secrets
+secrets.json
+
+#nvm
+.nvmrc
+
 # Logs
 logs
 *.log
