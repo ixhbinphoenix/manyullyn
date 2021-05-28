@@ -1,5 +1,9 @@
+#compiled js
+*.js
+
 #secrets
-secrets.json
+config.json
+tokens.json
 
 #nvm
 .nvmrc

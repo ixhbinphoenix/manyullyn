@@ -1,27 +1,34 @@
 {
   "name": "manyullyn",
-  "version": "0.0.1",
-  "description": "Manyullyn is a twitch chatbot for moderation and fun!",
-  "main": "/src/index.js",
+  "version": "0.1.0",
+  "description": "Twitch chatbot",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node ./src/index.js"
+    "build": "tsc",
+    "start": "tsc && node ./src/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PhoenixGames-Phoenix/manyullyn.git"
+    "url": "git+https://github.com/ixhbinphoenix/manyullyn.git"
   },
   "keywords": [
     "twitch",
-    "chatbot",
-    "nodejs"
+    "bot",
+    "chatbot"
   ],
-  "author": "Phoenix_13",
+  "author": "ixhbinphoenix",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/PhoenixGames-Phoenix/manyullyn/issues"
+    "url": "https://github.com/ixhbinphoenix/manyullyn/issues"
   },
-  "homepage": "https://github.com/PhoenixGames-Phoenix/manyullyn#readme",
+  "homepage": "https://github.com/ixhbinphoenix/manyullyn#readme",
   "dependencies": {
-    "tmi.js": "^1.7.1"
+    "@twurple/api": "^5.0.0-pre.6",
+    "@twurple/auth": "^5.0.0-pre.6",
+    "@twurple/chat": "^5.0.0-pre.6",
+    "typescript": "^4.3.2"
+  },
+  "devDependencies": {
+    "tsc": "^2.0.3"
   }
 }
