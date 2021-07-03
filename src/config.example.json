@@ -1,0 +1,12 @@
+{
+    "app": {
+        "clientId": "",
+        "clientSecret": ""
+    },
+    "tmi": {
+        "channels": [
+            ""
+        ]
+    },
+    "prefix": ""
+}
