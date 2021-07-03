@@ -1,9 +1,12 @@
+# custom commands
+custom/
+
 #compiled js
 *.js
 
 #secrets
 config.json
-tokens.json
+*tokens.json
 
 #nvm
 .nvmrc

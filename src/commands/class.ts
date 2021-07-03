@@ -1,4 +1,4 @@
-import { promises as fs } from "fs";
+import { promises as fs } from "fs-extra";
 
 export class BaseCommand {
     name: string | undefined;

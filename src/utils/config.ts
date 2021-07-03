@@ -20,6 +20,9 @@ interface TokenConfig {
 export function getConfig(): botConfig {
         return JSON.parse(fs.readFileSync("./src/config.json").toString());
 }
-export function getTokens(): TokenConfig {
-    return JSON.parse(fs.readFileSync("./src/tokens.json").toString());
+export function getAPITokens(): TokenConfig {
+    return JSON.parse(fs.readFileSync("./src/APItokens.json").toString());
+}
+export function getTMITokens(): TokenConfig {
+    return JSON.parse(fs.readFileSync("./src/TMItokens.json").toString());
 }

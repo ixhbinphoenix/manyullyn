@@ -1,0 +1,12 @@
+import { BaseCommand } from "../class";
+import { chatClient } from "../../index";
+
+class TEMPLATENAMECommand extends BaseCommand {
+    name = "TEMPLATENAME";
+    description = "TEMPLATEDESC";
+    usage = "TEMPLATEUSAGE";
+    execute = async (user: string, channel: string, args: Array<string>) => {
+        chatClient.say(channel, `TEMPLATEMESSAGE`)
+    }
+}
+export const cmd = new TEMPLATENAMECommand();
