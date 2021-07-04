@@ -12,12 +12,12 @@ export async function getCommands(): Promise<Map<string,any>> {
     const commandMap = new Map();
 
     builtin.forEach((command: string): void => {
-        delete require.cache[require("./builtin/" + command)];
+        delete require.cache[require.resolve(`./builtin/${command}`)];
         const cmd = require("./builtin/" + command);
         commandMap.set(cmd.cmd.name, cmd.cmd);
     })
     custom.forEach((command: string): void => {
-        delete require.cache[require("./custom/" + command)];
+        delete require.cache[require.resolve(`./custom/${command}`)];
         const cmd = require("./custom/" + command);
         commandMap.set(cmd.cmd.name, cmd.cmd);
     })
