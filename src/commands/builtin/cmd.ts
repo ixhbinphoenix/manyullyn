@@ -8,8 +8,8 @@ import { build } from "tsc-prog";
 
 class cmdCommand extends BaseCommand {
     name = "cmd";
-    description = "Create, edit and delete custom commands";
-    usage = "cmd <create | edit | delete> <name> [<command text>]";
+    description = "Create and delete custom commands";
+    usage = "cmd <create | delete> <name> [<command text>]";
     execute = async (user: string, channel: string, args: Array<string>) => {
         if (!(await isMod(user, channel) || await isBroadcaster(user, channel))) return;
         if (!args[1]) { await chatClient.say(channel, `@${user} Not enough arguments. Usage: ${this.usage}`); return; }
@@ -21,10 +21,10 @@ class cmdCommand extends BaseCommand {
                 if (!args[2]) { await chatClient.say(channel, `@${user} Not enough arguments. Usage: ${this.usage}`); return; }
                 if ((await getCommands()).has(args[1])) { await chatClient.say(channel, `@${user} Command already exists!`); return;}
 
+                let message = args.slice(2).join(" ");
                 let name = args[1];
                 let desc = `Command created by ${user}`;
                 let usage = `${name}`;
-                let message = args[2];
 
                 if (!fs.existsSync("./src/commands/custom/")) fs.mkdirSync("./src/commands/custom/");
                 let template = fs.readFileSync("./src/commands/commandTemplate.template").toString();
@@ -48,36 +48,6 @@ class cmdCommand extends BaseCommand {
                 })
                 await refreshCommands();
                 await chatClient.say(channel, `@${user} Successfully created command '${name}'!`);
-                break;
-            case "edit":
-                if (!args[2]) { await chatClient.say(channel, `@${user} Not enough arguments. Usage: ${this.usage}`); return; }
-                if (!(await getCommands()).has(args[1])) { await chatClient.say(channel, `@${user} Command doesn't exist! Try creating it by using 'cmd create ${args[1]} ${args[2]}'`); return; }
-                let ename = args[1];
-                let edesc = `Command created by ${user}`;
-                let eusage = `${ename}`;
-                let emessage = args[2];
-                fs.rmSync("./src/commands/custom/" + ename + ".ts");
-                fs.rmSync("./src/commands/custom/" + ename + ".js");
-                let etemplate = fs.readFileSync("./src/commands/commandTemplate.template").toString();
-                etemplate = etemplate.replace("TEMPLATENAME", ename).replace("TEMPLATEDESC", edesc).replace("TEMPLATEUSAGE", eusage).replace("TEMPLATEMESSAGE", emessage);
-                fs.writeFileSync(`./src/commands/custom/${ename}.ts`, etemplate);
-                build({
-                    basePath: __dirname + '../custom/',
-                    compilerOptions: {
-                        lib: ["es2020"],
-                        module: "commonjs",
-                        target: "es2020",
-
-                        strict: true,
-                        esModuleInterop: true,
-                        skipLibCheck: true,
-                        noImplicitAny: true,
-                        removeComments: true
-                    },
-                    include: ['/*']
-                })
-                await refreshCommands();
-                await chatClient.say(channel, `@${user} Successfully edited command '${ename}'!`);
                 break;
             case "delete":
                 if (!(await getCommands()).has(args[1])) { await chatClient.say(channel, `@${user} Command doesn't exist!`); return; }

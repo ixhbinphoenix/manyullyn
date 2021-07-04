@@ -11,11 +11,13 @@ export async function getCommands(): Promise<Map<string,any>> {
     const custom: Array<string> = await (await fs.readdir("./src/commands/custom")).filter((path) => path.endsWith(".js"));
     const commandMap = new Map();
 
-    builtin.forEach(async (command: string): Promise<void> => {
+    builtin.forEach((command: string): void => {
+        delete require.cache[require("./builtin/" + command)];
         const cmd = require("./builtin/" + command);
         commandMap.set(cmd.cmd.name, cmd.cmd);
     })
-    custom.forEach(async (command: string): Promise<void> => {
+    custom.forEach((command: string): void => {
+        delete require.cache[require("./custom/" + command)];
         const cmd = require("./custom/" + command);
         commandMap.set(cmd.cmd.name, cmd.cmd);
     })
