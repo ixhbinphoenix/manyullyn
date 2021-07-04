@@ -4,7 +4,7 @@ Manyullyn is a Twitch chatbot for moderation and fun
 ## Setup
 First, clone the git repository using `git clone https://github.com/ixhbinphoenix/manyullyn.git`
 Configure all files ending with .example.json (except tokens and the app part of config.json, we will get to that later) and remove the .example from their name.
-To start the bot, run `npm run start`. For the bot to work, you'll have to setup Authentication first.
+To start the bot, run `npm start`. For the bot to work, you'll have to setup Authentication first.
 
 ## Authentication
 Now, we'll have to setup authentication for the Twitch API.
@@ -49,4 +49,4 @@ The respone body should look like this:
 ```
 You can copy this into either APItokens.json or TMItokens.json with a small change. You have to change `access_token` to `accessToken` and `refresh_token` to `refreshToken`.
 
-And now you're finished! You can now launch the bot using `npm run start`
+And now you're finished! You can now launch the bot using `npm start`

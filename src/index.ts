@@ -4,6 +4,7 @@ import { ChatClient } from '@twurple/chat';
 import { getConfig, getAPITokens, getTMITokens } from './utils/config';
 import { promises as fs } from 'fs';
 import { getCommands } from './commands/class';
+import { TimerInterval } from "./commands/builtin/timer";
 
 const config = getConfig();
 const APItokens = getAPITokens();
@@ -31,6 +32,7 @@ export const chatClient = new ChatClient(
     tmiAuth,
     { channels: config.tmi.channels }
 )
+export let timers: Map<string, TimerInterval> = new Map<string, TimerInterval>();
 let commands = getCommands();
 
 export async function refreshCommands(): Promise<void> {
