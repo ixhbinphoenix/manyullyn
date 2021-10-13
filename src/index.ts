@@ -4,7 +4,6 @@ import { ChatClient } from '@twurple/chat';
 import { getConfig, getAPITokens, getTMITokens } from './utils/config';
 import { promises as fs } from 'fs';
 import { getCommands } from './commands/class';
-import { TimerInterval } from "./commands/builtin/timer";
 
 const config = getConfig();
 const APItokens = getAPITokens();
@@ -27,12 +26,10 @@ const tmiAuth = new RefreshingAuthProvider(
     },
     TMItokens
 )
-export const api = new ApiClient({authProvider: ApiAuth})
+export const api = new ApiClient({ authProvider: ApiAuth })
 export const chatClient = new ChatClient(
-    tmiAuth,
-    { channels: config.tmi.channels }
+    { channels: config.tmi.channels, authProvider: tmiAuth }
 )
-export let timers: Map<string, TimerInterval> = new Map<string, TimerInterval>();
 let commands = getCommands();
 
 export async function refreshCommands(): Promise<void> {
@@ -51,8 +48,6 @@ async function main(): Promise<void> {
             }
         }
     })
-    
-
     await chatClient.connect();
     console.log("ChatClient connected");
 }

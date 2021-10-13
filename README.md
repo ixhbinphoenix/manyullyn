@@ -4,7 +4,7 @@ Manyullyn is a Twitch chatbot for moderation and fun
 ## Setup
 First, clone the git repository using `git clone https://github.com/ixhbinphoenix/manyullyn.git`
 Configure all files ending with .example.json (except tokens and the app part of config.json, we will get to that later) and remove the .example from their name.
-To start the bot, run `npm start`. For the bot to work, you'll have to setup Authentication first.
+To start the bot, run `pnpm start`. For the bot to work, you'll have to setup Authentication first.
 
 ## Authentication
 Now, we'll have to setup authentication for the Twitch API.
@@ -14,6 +14,8 @@ Create a Twitch application with your main Twitch account in your [Twitch develo
 ### Tokens
 The bot uses a two Token Setup, to seperate the account making API request and the account sending messages in your chat.
 
+The account sending messages is your bot account (in this case `manyullyun`) and the account making API requests is the streamers account (you)
+
 You'll have to repeat the following steps with your main account for the API and your bot account for the Chat.
 
 For API access tokens, we'll need to specify scopes we need. The Chat Tokens require `chat:edit` and `chat:read`. The API tokens require almost all scopes, so I would just use most things from [here](https://dev.twitch.tv/docs/authentication#scopes).
@@ -22,7 +24,7 @@ To obtain a authorization token form Twitch, you'll have to open this page in yo
 ```url
 https://id.twitch.tv/oauth2/authorize?client_id=YOUR_CLIENT_ID
     &redirect_uri=http://localhost
-    &response_type=token
+    &response_type=code
     &scope=scopes:seperated by:spaces
 ```
 It will redirect you to localhost, which will result in an error page. Copy the &code= from the URL in your browser and save it for later.
@@ -49,4 +51,4 @@ The respone body should look like this:
 ```
 You can copy this into either APItokens.json or TMItokens.json with a small change. You have to change `access_token` to `accessToken` and `refresh_token` to `refreshToken`.
 
-And now you're finished! You can now launch the bot using `npm start`
+And now you're finished! You can now launch the bot using `pnpm start`

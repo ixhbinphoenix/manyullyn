@@ -3,8 +3,8 @@ import { BaseCommand } from "../class";
 import { chatClient, refreshCommands } from "../../index";
 import { isBroadcaster, isMod } from "../../utils/perms";
 import { getCommands } from "../class";
-import * as fs from "fs-extra";
-import { build } from "tsc-prog";
+import { promises as fs, existsSync } from "fs-extra";
+import { createCommand, deleteCommand } from "../../lib/api";
 
 class cmdCommand extends BaseCommand {
     name = "cmd";
@@ -26,34 +26,17 @@ class cmdCommand extends BaseCommand {
                 let desc = `Command created by ${user}`;
                 let usage = `${name}`;
 
-                if (!fs.existsSync("./src/commands/custom/")) fs.mkdirSync("./src/commands/custom/");
-                let template = fs.readFileSync("./src/commands/commandTemplate.template").toString();
+                if (!existsSync("./src/commands/custom/")) fs.mkdir("./src/commands/custom/");
+                let template = (await fs.readFile("./src/commands/commandTemplate.template")).toString();
                 // TODO: Fix this shit
                 template = template.replace("TEMPLATENAME", name).replace("TEMPLATENAME", name).replace("TEMPLATENAME", name).replace("TEMPLATEDESC", desc).replace("TEMPLATEUSAGE", usage).replace("TEMPLATEMESSAGE", message);
-                fs.writeFileSync(`./src/commands/custom/${name}.ts`, template);
-                build({
-                    basePath: __dirname,
-                    compilerOptions: {
-                        lib: ["es2020"],
-                        module: "commonjs",
-                        target: "es2020",
-
-                        strict: true,
-                        esModuleInterop: true,
-                        skipLibCheck: true,
-                        noImplicitAny: true,
-                        removeComments: true
-                    },
-                    include: ['../custom/**/*']
-                })
-                await refreshCommands();
+                await fs.writeFile(`./src/commands/custom/${name}.ts`, template);
+                await createCommand("../commands/custom/**/*");
                 await chatClient.say(channel, `@${user} Successfully created command '${name}'!`);
                 break;
             case "delete":
                 if (!(await getCommands()).has(args[1])) { await chatClient.say(channel, `@${user} Command doesn't exist!`); return; }
-                fs.rmSync("./src/commands/custom/" + args[1] + ".ts");
-                fs.rmSync("./src/commands/custom/" + args[1] + ".js");
-                await refreshCommands();
+                await deleteCommand("./src/commands/custom", args[1])
                 await chatClient.say(channel, `@${user} Successfully removed command '${args[1]}'!`);
                 break;
             default:
