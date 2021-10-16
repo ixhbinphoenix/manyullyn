@@ -1,7 +1,9 @@
-import { BaseCommand } from "../class";
-import { chatClient } from "../../index";
-import { isBroadcaster, isMod, isVIP } from "../../utils/perms";
+import { BaseCommand } from "../../lib/commands";
+import chat from "../../lib/chat";
+import { isBroadcaster, isMod, isVIP } from "../../lib/perms";
 import { getStream, setStream, StreamData } from "../../utils/config";
+
+const chatClient = chat.chatClient;
 
 class streamCommand extends BaseCommand {
     name = "stream";

@@ -10,5 +10,6 @@
         "noImplicitAny": true,
         "removeComments": true,
     },
-    "include": ["src/**/*"]
+    "include": ["src/**/*"],
+    "exclude": ["src/test/**/*"]
 }

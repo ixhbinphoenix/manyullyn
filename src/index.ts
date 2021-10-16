@@ -3,7 +3,7 @@ import { ApiClient } from '@twurple/api';
 import { ChatClient } from '@twurple/chat';
 import { getConfig, getAPITokens, getTMITokens } from './utils/config';
 import { promises as fs } from 'fs';
-import { getCommands } from './commands/class';
+import { getCommands } from './lib/commands';
 
 const config = getConfig();
 const APItokens = getAPITokens();
@@ -17,7 +17,7 @@ const ApiAuth = new RefreshingAuthProvider(
     },
     APItokens
 )
-// Auth for TMI with the manyullyn user
+// Auth for TMI with the manyullyun user
 const tmiAuth = new RefreshingAuthProvider(
     {
         clientId: config.app.clientId,

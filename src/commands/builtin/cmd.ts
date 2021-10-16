@@ -1,10 +1,8 @@
 
-import { BaseCommand } from "../class";
-import { chatClient, refreshCommands } from "../../index";
-import { isBroadcaster, isMod } from "../../utils/perms";
-import { getCommands } from "../class";
+import { BaseCommand, getCommands, createCommand, deleteCommand } from "../../lib/commands";
+import { isBroadcaster, isMod } from "../../lib/perms";
 import { promises as fs, existsSync } from "fs-extra";
-import { createCommand, deleteCommand } from "../../lib/api";
+import chat from "../../lib/chat";
 
 class cmdCommand extends BaseCommand {
     name = "cmd";
@@ -12,14 +10,14 @@ class cmdCommand extends BaseCommand {
     usage = "cmd <create | delete> <name> [<command text>]";
     execute = async (user: string, channel: string, args: Array<string>) => {
         if (!(await isMod(user, channel) || await isBroadcaster(user, channel))) return;
-        if (!args[1]) { await chatClient.say(channel, `@${user} Not enough arguments. Usage: ${this.usage}`); return; }
-        // Checks if command name contains ~, /, \, ., ' or "
-        let regex = new RegExp("[\'\"\~\/\\\.]", "g");
-        if (regex.test(args[1])) { await chatClient.say(channel, `@${user} Command name contains invalid Characters!`); return; }
+        if (!args[1]) { await chat.say(channel, `@${user} Not enough arguments. Usage: ${this.usage}`); return; }
+        // Checks if command name contains: (){}[];:'"~/\|.,
+        let regex = /[\(\)\{\}\[\]\;\:\'\"\~\/\\\|\.\,]/g
+        if (regex.exec(args[1])) { await chat.say(channel, `@${user} Command name contains invalid Characters!`); return; }
         switch (args[0]) {
             case "create":
-                if (!args[2]) { await chatClient.say(channel, `@${user} Not enough arguments. Usage: ${this.usage}`); return; }
-                if ((await getCommands()).has(args[1])) { await chatClient.say(channel, `@${user} Command already exists!`); return;}
+                if (!args[2]) { await chat.say(channel, `@${user} Not enough arguments. Usage: ${this.usage}`); return; }
+                if ((await getCommands()).has(args[1])) { await chat.say(channel, `@${user} Command already exists!`); return;}
 
                 let message = args.slice(2).join(" ");
                 let name = args[1];
@@ -32,15 +30,15 @@ class cmdCommand extends BaseCommand {
                 template = template.replace("TEMPLATENAME", name).replace("TEMPLATENAME", name).replace("TEMPLATENAME", name).replace("TEMPLATEDESC", desc).replace("TEMPLATEUSAGE", usage).replace("TEMPLATEMESSAGE", message);
                 await fs.writeFile(`./src/commands/custom/${name}.ts`, template);
                 await createCommand("../commands/custom/**/*");
-                await chatClient.say(channel, `@${user} Successfully created command '${name}'!`);
+                await chat.say(channel, `@${user} Successfully created command '${name}'!`);
                 break;
             case "delete":
-                if (!(await getCommands()).has(args[1])) { await chatClient.say(channel, `@${user} Command doesn't exist!`); return; }
+                if (!(await getCommands()).has(args[1])) { await chat.say(channel, `@${user} Command doesn't exist!`); return; }
                 await deleteCommand("./src/commands/custom", args[1])
-                await chatClient.say(channel, `@${user} Successfully removed command '${args[1]}'!`);
+                await chat.say(channel, `@${user} Successfully removed command '${args[1]}'!`);
                 break;
             default:
-                await chatClient.say(channel, `@${user} Invalid Argument '${args[0]}'. Usage: ${this.usage}`);
+                await chat.say(channel, `@${user} Invalid Argument '${args[0]}'. Usage: ${this.usage}`);
                 break;
         }
     }
